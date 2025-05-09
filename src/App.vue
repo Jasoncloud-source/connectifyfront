@@ -1,25 +1,20 @@
-<template>
-  <v-app>
-    <NavBar />
-    <v-content>
-      <Router-View />
-    </v-content>
-    <Footer />
- 
-  </v-app>
-</template>
-
+<!-- src/App.vue -->
 <script setup>
-import NavBar from './components/NavBar.vue'
-//import { onMounted } from 'vue'
-//import { useRouter } from 'vue-router'    
-import Footer from './components/FooterBar.vue'
+import { useRoute } from 'vue-router'
+import AppLayout from '@/layouts/AppLayout.vue'
+//import NavBar from '@/components/NavBar.vue'
+//import CommunityList from '@/components/CommunityList.vue'
+const route = useRoute()
+const hideLayout = ['login', 'register', 'welcome'].includes(route.name)
 </script>
 
-<style>
-.main-content{
-  padding-top: 20px; 
-  min-height: 90vh; 
-  flex-grow: 1;
-}
-</style>
+<template>
+  <v-app>
+    
+    <AppLayout v-if="!hideLayout">
+      <router-view />
+    </AppLayout>
+    <router-view v-else />
+  </v-app>
+  
+</template>

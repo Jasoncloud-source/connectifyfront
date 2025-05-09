@@ -1,7 +1,7 @@
 // src/services/auth.service.js
 import { ref, computed } from 'vue';
-import TokenService from './token.service';
-import api from './api';
+import TokenService from './tokenService';
+import api from './api.js';
 
 // Reactive state
 const user = ref(null);

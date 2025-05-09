@@ -29,13 +29,16 @@
   
   // Navigation links tailored for community app
   const links = ref([
-    { text: 'Home', route: '/' },
-    { text: 'About Us', route: '/about-us' },
-    { text: 'Community Guidelines', route: '/community-guidelines' },
-    { text: 'Contact Us', route: '/contact-us' },
-    { text: 'Sign In', route: '/login' },
-    { text: 'Sign Up', route: '/register' },
-  ]);
+  { text: 'Home', route: '/' },
+  { text: 'About Us', route: '/about-us' },
+  { text: 'Community Events', route: '/event' },
+  { text: 'Contact Us', route: '/contact-us' },
+  { text: 'Login', route: '/login' },
+  { text: 'Sign Up', route: '/signup' },
+
+]);
+
+  
   </script>
   
   <style scoped>

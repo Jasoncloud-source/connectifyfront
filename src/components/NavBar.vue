@@ -59,7 +59,7 @@
     </v-menu>
 
     <!-- Logout Button -->
-    <v-btn v-if="isAuthenticated" text @click="handleLogout" class="ml-2">
+    <v-btn v-if="isAuthenticated" text @click="handleLogout" class="ml-2"> 
       <v-icon left>mdi-logout</v-icon>
       Logout
     </v-btn>
@@ -71,17 +71,10 @@ import { ref, computed, onMounted } from 'vue';
 import { useRouter } from 'vue-router';
 import { useAuth } from '../services/auth.service';
 
-// const props = defineProps({
-//   hideForUnauthenticated: {
-//     type: Boolean,
-//     default: true,
-//   },
-// });
-
 const drawer = ref(true);
-const router = useRouter();
+const hideForUnauthenticated = ref(false); // Define this to fix the warning
 
-// Auth state
+const router = useRouter();
 const { isAuthenticated, currentUser, isAdmin, logout, loadUserInfo } = useAuth();
 
 onMounted(async () => {
@@ -98,24 +91,13 @@ function handleLogout() {
   router.push('/login');
 }
 
-// **Optimized Navigation Links Logic**
-const filteredPaths = computed(() =>
-  allPaths.filter((path) => {
-    if (path.public) return true;
-    if (!isAuthenticated.value && path.showWhenLoggedOut) return true;
-    return isAuthenticated.value && (!path.requiresAdmin || isAdmin.value);
-  })
-);
-
-// **Updated Community App Routes**
+// Define app navigation links
 const allPaths = [
-  // Public Pages
   { icon: 'mdi-home', text: 'Home', route: '/', public: true },
-  { icon: 'mdi-magnify', text: 'Sign Up', route: '/SignUp', public: true },
+  { icon: 'mdi-magnify', text: 'Sign Up', route: '/signup', public: true },
   { icon: 'mdi-heart', text: 'About Us', route: '/about-us', public: true },
   { icon: 'mdi-mail', text: 'Contact Us', route: '/contact-us', public: true },
 
-  // User-Only Pages
   { icon: 'mdi-lock', text: 'Login', route: '/login', showWhenLoggedOut: true },
   { icon: 'mdi-account', text: 'My Profile', route: '/profile', requiresAuth: true },
   { icon: 'mdi-account-multiple', text: 'Community', route: '/community', requiresAuth: true },
@@ -125,16 +107,21 @@ const allPaths = [
   { icon: 'mdi-bell', text: 'Notifications', route: '/notifications', requiresAuth: true },
   { icon: 'mdi-message-text', text: 'Messages', route: '/messages', requiresAuth: true },
 
-  // Admin-Only Pages (Removed Restaurant-Specific Routes)
   { icon: 'mdi-account-group', text: 'User Management', route: '/admin/users', requiresAdmin: true },
   { icon: 'mdi-clipboard-list', text: 'System Reports', route: '/admin/reports', requiresAdmin: true },
 ];
+
+// Filter paths based on user role
+const filteredPaths = computed(() =>
+  allPaths.filter((path) => {
+    if (path.public) return true;
+    if (!isAuthenticated.value && path.showWhenLoggedOut) return true;
+    return isAuthenticated.value && (!path.requiresAdmin || isAdmin.value);
+  })
+);
 </script>
 
 <style scoped>
-.border {
-  border-left: 4px solid #0ba518;
-}
 .text-decoration-none {
   text-decoration: none;
 }
