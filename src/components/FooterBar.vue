@@ -35,7 +35,10 @@
   { text: 'Contact Us', route: '/contact-us' },
   { text: 'Login', route: '/login' },
   { text: 'Sign Up', route: '/signup' },
-
+{text: 'Communities', route: '/communities' },
+  { text: 'Create Community', route: '/create-community' },
+  { text: 'Dashboard', route: '/dashboard' },
+  { text: 'Onboarding', route: '/onboarding' }
 ]);
 
   

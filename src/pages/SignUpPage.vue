@@ -39,10 +39,7 @@
                 v-model="email"
                 label="Email"
                 prepend-inner-icon="mdi-email"
-                :rules="[
-                  v => !!v || 'Email is required',
-                  v => /.+@.+\..+/.test(v) || 'E-mail must be valid'
-                ]"
+                :rules="[v => !!v || 'Email is required', v => /.+@.+\..+/.test(v) || 'E-mail must be valid']"
                 required
                 outlined
                 dense
@@ -72,10 +69,7 @@
                 :append-icon="showConfirmPassword ? 'mdi-eye' : 'mdi-eye-off'"
                 :type="showConfirmPassword ? 'text' : 'password'"
                 @click:append="showConfirmPassword = !showConfirmPassword"
-                :rules="[
-                  v => !!v || 'Please confirm your password',
-                  v => v === password || 'Passwords must match'
-                ]"
+                :rules="[v => !!v || 'Please confirm your password', v => v === password || 'Passwords must match']"
                 required
                 outlined
                 dense
@@ -122,8 +116,8 @@ const loading = ref(false);
 const errorMessage = ref('');
 const successMessage = ref('');
 
-// API configuration
-const apiUrl = process.env.VUE_APP_API_URL || 'http://localhost:8000/api';
+// API configuration (Vue CLI uses process.env.VUE_APP_API_BASE)
+const apiUrl = process.env.VUE_APP_API_BASE || 'http://localhost:8000/api';
 
 const register = async () => {
   errorMessage.value = '';
@@ -135,16 +129,23 @@ const register = async () => {
   loading.value = true;
 
   try {
-    await axios.get(`${apiUrl}/sanctum/csrf-cookie`);
-    const response = await axios.post(`${apiUrl}/register`, {
-      name: name.value,
-      email: email.value,
-      password: password.value,
-      password_confirmation: password_confirmation.value,
-    }, {
-      headers: { 'Accept': 'application/json' },
-      withCredentials: true
-    });
+    // Get CSRF cookie
+   // await axios.get(`${apiUrl}/sanctum/csrf-cookie`);
+    
+    // Perform registration request
+    const response = await axios.post(
+      `${apiUrl}/register`,
+      {
+        name: name.value,
+        email: email.value,
+        password: password.value,
+        password_confirmation: password_confirmation.value,
+      },
+      {
+        headers: { 'Accept': 'application/json' },
+        withCredentials: true,
+      }
+    );
 
     successMessage.value = 'Registration successful! Redirecting...';
     localStorage.setItem('auth-token', response.data.token);
